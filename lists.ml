@@ -10,11 +10,12 @@ let last_two = function
 
 let rec at k = function
   | [] -> None
-  | h :: t -> if k = 0 then Some h else at (k - 1) t
+  | h :: t when k = 0 -> Some h
+  | h :: t -> at (k - 1) t
 
-let rec length ?(n = 0) = function
-  | [] -> n
-  | h :: t -> length ~n:(n + 1) t
+let rec length = function
+  | [] -> 0
+  | h :: t -> 1 + length t
 
 let rec reverse = function
   | [] -> []
@@ -26,8 +27,7 @@ type 'a node =
   | One of 'a
   | Many of 'a node list
 
-let rec flatten ?(acc = []) = function
-  | [] -> acc
-  | [ One x ] -> [ x ]
+let rec flatten = function
+  | [] -> []
   | One x :: t -> x :: flatten t
-  | Many x :: t -> List.append (flatten x) (flatten t)
+  | Many x :: t -> flatten x @ flatten t
