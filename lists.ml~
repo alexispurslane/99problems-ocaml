@@ -1,0 +1,7 @@
+let rec last lst = match lst with
+  | [ ] -> None
+  | x   -> Some (x |> List.rev |> List.hd)
+
+let last_two lst = match lst with
+  | [ ]     -> None
+  | a::b::t -> Some((a, b))
