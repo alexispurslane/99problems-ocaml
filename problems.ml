@@ -34,7 +34,7 @@ let rec flatten = function
   | Many x :: t -> flatten x @ flatten t
 
 let rec compress = function
-  | [] | [_] -> []
+  | [] | [_] as l -> l
   | a :: (b :: _ as t) when a = b -> compress t
   | a :: (b :: _ as t) -> a :: compress t
 
@@ -82,5 +82,20 @@ let rec decode = function
 
 let rec duplicate = function
   | [] -> []
-  | [x] -> [ x; x ]
   | h :: t -> h :: h :: duplicate t
+
+let rec replicate n = function
+  | [] -> []
+  | h :: t ->
+     List.map (List.range 0 n) (fun _ -> h) :: replicate n t
+
+let drop n lst =
+  let rec loop i = function
+    | [] -> []
+    | h :: t -> if i = n then loop 1 t else h :: loop (i + 1) t in
+  loop 1 lst
+
+let split n = function
+  | [] -> ([], [])
+  | lst -> (List.take lst n, List.drop lst n)
+    
